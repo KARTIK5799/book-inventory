@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import AddBookButton from './AddBookButton';
 
 
+// eslint-disable-next-line react/prop-types
 const NavBar = ({ loggedIn, userType, onLogout }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -72,7 +74,7 @@ const NavBar = ({ loggedIn, userType, onLogout }) => {
       </div>
 
    
-{/* Mobile Menu */}
+
 {mobileMenuOpen && (
   <div className="md:hidden bg-gray-800 p-4 text-center">
     {loggedIn ? (
@@ -86,9 +88,8 @@ const NavBar = ({ loggedIn, userType, onLogout }) => {
             Logout
           </button>
           {userType === 'teacher' && (
-            <Link to="/add-book" className="text-white bg-green-500 px-4 py-2 rounded mx-2">
-              Add Book
-            </Link>
+            <AddBookButton className="text-white bg-green-500 px-4 py-2 rounded mx-2"/>
+         
           )}
         </div>
       </>

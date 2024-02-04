@@ -1,11 +1,11 @@
-
-import { useState } from "react";
+import  { useState } from "react";
 import { Link } from "react-router-dom";
 import booksData from "../data/books";
+import Pagination from "./Pagination";
 
-
+// eslint-disable-next-line react/prop-types
 const BookList = ({ userType }) => {
-  const [books, setBooks] = useState(booksData); 
+  const [books, setBooks] = useState(booksData);
   const [editedBook, setEditedBook] = useState(null);
   const booksPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,9 +50,7 @@ const BookList = ({ userType }) => {
     setEditedBook({ ...editedBook, [field]: e.target.value });
   };
 
-
   const saveBooksData = (updatedBooks) => {
-
     setBooks(updatedBooks);
     console.log("Saving data to books.json:", updatedBooks);
   };
@@ -72,14 +70,11 @@ const BookList = ({ userType }) => {
 
       <div className="w-full sm:w-11/12 md:w-3/4 lg:w-2/3 xl:w-4/5 mx-auto overflow-x-auto">
         <div className="flex bg-gray-800 text-white">
-          <div className="w-1/3 sm:w-1/6 p-2 border">Name</div>
-          <div className="w-1/3 sm:w-1/6 p-2 border">Author</div>
-          <div className="w-1/3 sm:w-1/6 p-2 border">Availability</div>
+          <div className="w-1/3 sm:w-1/3 p-2 border">Name</div>
+          <div className="w-1/3 sm:w-1/3 p-2 border">Author</div>
+          <div className="w-1/3 sm:w-1/3 p-2 border">Availability</div>
           {userType === "teacher" && (
-            <>
-              <div className="w-1/6 p-2 border">Edit</div>
-              <div className="w-1/6 p-2 border">Delete</div>
-            </>
+            <div className="w-1/3 p-2 border">Actions</div>
           )}
         </div>
 
@@ -87,51 +82,53 @@ const BookList = ({ userType }) => {
           <div key={book.id} className="flex border hover:bg-gray-100 transition duration-300 ease-in">
             {editedBook && editedBook.id === book.id ? (
               <>
-                <div className="w-1/3 sm:w-1/6 p-2 border">
+                <div className="w-1/3 sm:w-1/3 p-2 border">
                   <input
                     type="text"
                     value={editedBook.name}
                     onChange={(e) => handleInputChange(e, "name")}
+                    className="w-full"
                   />
                 </div>
-                <div className="w-1/3 sm:w-1/6 p-2 border">
+                <div className="w-1/3 sm:w-1/3 p-2 border">
                   <input
                     type="text"
                     value={editedBook.author}
                     onChange={(e) => handleInputChange(e, "author")}
+                    className="w-full"
                   />
                 </div>
-                <div className={`w-1/3 sm:w-1/6 p-2 border font-bold ${editedBook.available ? "text-green-500" : "text-red-500"}`}>
+                <div className={`w-1/3 sm:w-1/3 p-2 border font-bold ${editedBook.available ? "text-green-500" : "text-red-500"}`}>
                   {editedBook.available ? "Available" : "Not Available"}
                 </div>
-                <div className="w-1/6 p-2 border">
-                  <button onClick={() => handleSaveChanges(book.id)}>Save</button>
-                </div>
+                {userType === "teacher" && (
+                  <div className="w-1/3 p-2 border">
+                    <button onClick={() => handleSaveChanges(book.id)} className="bg-blue-500 text-white px-3 py-1 rounded">
+                      Save
+                    </button>
+                  </div>
+                )}
               </>
             ) : (
               <>
-                <div className="w-1/3 sm:w-1/6 p-2 border">
+                <div className="w-1/3 sm:w-1/3 p-2 border">
                   <Link to={`/book/${book.id}`} className="text-blue-500">
                     {book.name}
                   </Link>
                 </div>
-                <div className="w-1/3 sm:w-1/6 p-2 border">{book.author}</div>
-                <div className={`w-1/3 sm:w-1/6 p-2 border font-bold ${book.available ? "text-green-500" : "text-red-500"}`}>
+                <div className="w-1/3 sm:w-1/3 p-2 border">{book.author}</div>
+                <div className={`w-1/3 sm:w-1/3 p-2 border font-bold ${book.available ? "text-green-500" : "text-red-500"}`}>
                   {book.available ? "Available" : "Not Available"}
                 </div>
                 {userType === "teacher" && (
-                  <>
-                    <div className="w-1/6 p-2 border">
-                      <button className="text-blue-500 mr-2" onClick={() => handleEditClick(book.id)}>
-                        Edit
-                      </button>
-                    </div>
-                    <div className="w-1/6 p-2 border">
-                      <button className="text-blue-500 mr-2" onClick={() => handleDeleteClick(book.id)}>
-                        Delete
-                      </button>
-                    </div>
-                  </>
+                  <div className="w-1/3 p-2 border">
+                    <button className="text-blue-500 mr-2" onClick={() => handleEditClick(book.id)}>
+                      Edit
+                    </button>
+                    <button className="text-blue-500 mr-2" onClick={() => handleDeleteClick(book.id)}>
+                      Delete
+                    </button>
+                  </div>
                 )}
               </>
             )}
@@ -139,29 +136,12 @@ const BookList = ({ userType }) => {
         ))}
       </div>
 
-      <div className="flex justify-center mt-4">
-        <button
-          onClick={handlePrevPage}
-          disabled={currentPage === 1}
-          className={`bg-blue-500 text-white px-3 py-2 rounded mr-2 ${
-            currentPage === 1 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-          }`}
-        >
-          Prev
-        </button>
-        <span className="text-blue-500">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-          className={`bg-blue-500 text-white px-3 py-2 rounded ml-2 ${
-            currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-          }`}
-        >
-          Next
-        </button>
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePrevPage={handlePrevPage}
+        handleNextPage={handleNextPage}
+      />
     </div>
   );
 };
