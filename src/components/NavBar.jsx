@@ -27,7 +27,7 @@ const NavBar = ({ loggedIn, userType, onLogout }) => {
   <input
     type="text"
     placeholder="Search"
-    className="p-1 pl-8 border border-gray-300 rounded w-96"
+    className="p-1 pl-8 border border-gray-300 rounded w-96 search"
   />
  
 </div>
@@ -35,7 +35,7 @@ const NavBar = ({ loggedIn, userType, onLogout }) => {
           </div>
 
           {!loggedIn ? (
-            <Link to="/login" className="text-white bg-blue-500 px-4 py-2 rounded">
+            <Link to="/login" className="text-white bg-blue-500 px-4 py-2 rounded login">
               Login
             </Link>
           ) : (

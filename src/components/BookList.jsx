@@ -56,7 +56,7 @@ const BookList = ({ userType }) => {
   };
 
   return (
-    <div className="container mx-auto my-8">
+    <div className="container mx-auto my-8 list-books">
       {userType === "teacher" && (
         <div className="text-center mb-4">
           <Link
